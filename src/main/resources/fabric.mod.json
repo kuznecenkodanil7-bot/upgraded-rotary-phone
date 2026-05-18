@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "staff-join-notifier",
+  "version": "${version}",
+  "name": "Staff Join Notifier",
+  "description": "Client-side Fabric mod that sends a chat message when a player with a staff prefix joins the server.",
+  "authors": ["Lucas"],
+  "contact": {
+    "sources": "https://github.com/your-name/staff-join-notifier"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "ru.vgoqcnss4002.staffjoin.StaffJoinNotifierClient"
+    ]
+  },
+  "mixins": [
+    "staff_join_notifier.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
