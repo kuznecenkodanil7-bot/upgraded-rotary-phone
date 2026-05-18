@@ -10,16 +10,12 @@ base {
     archivesName = project.archives_base_name
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+repositories {
+    mavenCentral()
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
     }
-    withSourcesJar()
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    options.release = 21
 }
 
 dependencies {
@@ -29,25 +25,37 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
-processResources {
-    inputs.property 'version', project.version
+loom {
+    splitEnvironmentSourceSets()
 
-    filesMatching('fabric.mod.json') {
-        expand 'version': project.version
+    mods {
+        "staff-join-notifier" {
+            sourceSet sourceSets.client
+        }
     }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+}
+
+java {
+    withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
-    from('LICENSE') {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
-}
-
-publishing {
-    publications {
-        create('mavenJava', MavenPublication) {
-            artifactId = project.archives_base_name
-            from components.java
-        }
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
     }
 }
